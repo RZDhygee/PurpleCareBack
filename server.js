@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -31,4 +32,10 @@ client.connect(err => {
     const collection = client.db("test").collection("devices");
     //perform actions on the collection object
     client.close();
+});
+
+
+//start the server
+app.listen(_PORT, () => {
+    console.log('Server started');
 });
