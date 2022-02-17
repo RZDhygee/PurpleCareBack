@@ -1,7 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
+const bodyParser = require('body-parser');
 //Intiailzie app with express
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
@@ -34,6 +35,20 @@ client.connect(err => {
     client.close();
 });
 
+//---------------- Middlewares ----------------//
+//CORS MW
+app.use(cors());
+
+//body parser MW
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({extended:true, limit:"50mb"}));
+
+
+//Index Router
+app.get('/',(req,res,next) => {
+    res.send('I am alive')
+});
 
 //start the server
 app.listen(_PORT, () => {
