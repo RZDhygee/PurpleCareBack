@@ -8,19 +8,19 @@ const { stringify } = require('querystring');
 //Adding validate rule for email to be unique
 
 const UserSchema = mongoose.Schema({
-    name: string,
-    surname: string,
-    email: {type: string, required: true},
-    password: {type: string, required: true},
-    role: string,
-    nation:string,
-    city: string,
-    prefix:string,
-    phone: string,
-    creationDate:string,
-    status:string,
-    hospital:string,
-    specialization:string,
+    name: String,
+    surname: String,
+    email: {type: String, required: true},
+    password: {type: String, required: true},
+    role: String,
+    nation:String,
+    city: String,
+    prefix:String,
+    phone: String,
+    creationDate:String,
+    status:String,
+    hospital:String,
+    specialization:String,
 });
 
 //Pre save hook, Used to hash the password

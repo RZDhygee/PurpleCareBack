@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const passport = require('./config/passport');
+const passport = require('passport');
 //Intiailzie app with express
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
