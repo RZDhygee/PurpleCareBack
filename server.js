@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,7 +8,7 @@ const passport = require('passport');
 //Intiailzie app with express
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
-
+const session = require('express-session');
 
 //import the routes
 app.use(express.json()); //parses incoming requests with Json playloads
@@ -50,11 +51,18 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended:true, limit:"50mb"}));
 
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {maxAge: 60*60*1000}
+}));
 
 //Passport MW
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session());// persistent login sessions
 require('./config/passport')(passport);
+
 
 
 //Index Router
