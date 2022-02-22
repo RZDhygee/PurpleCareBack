@@ -127,6 +127,40 @@ router.post('/register', (req, res, next) => {
 });
 
 
+//list of users
+router.get('list', (req,res, next) => {
+    User.find((err,users) => {
+        if (err) {
+            return res.send({
+                success: false,
+                message: 'Error while retrieving the user'
+            });
+        }
+        return res.send({
+            success: true,
+            users
+        });
+    });
+});
+
+
+//get user by id
+router.post('getuser', (req, res, next) => {
+    let _id = req.body.id;
+    let query = {_id}
+    User.findById(query, (err,user) => {
+        if (err) {
+            return res.send({
+                success: false,
+                message:'Error while retrieving user'
+            });
+        }
+        return res.send({
+            success: true,
+            user
+        });  
+      });
+});
 
 module.exports = router;
 
