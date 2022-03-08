@@ -7,80 +7,45 @@ const {use} = require('passport');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 
-
 //Login
-router.post('auth', (req, res , next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+router.post('/auth', async (req, res) => {
 
-    const query = {email}
-    //check if the user exists
-    User.finfOne(query, (err,user) => {
-        //error during executing the query
-        if (err){
-            return res.send({
-                success: false,
-                message: 'Error, please try again'
-            });
-        }
-
-        //No user match the search condition
-        if (!user){
-            return res.send({
-                success: false,
-                message: 'Error, Account not found '+req.body
-            });
-        }
-
-        //check if the password is correct
-        user.isPasswordMatch(password, user.password,(err,isMatch) => {
-            
-            //Invalid password
-            if (!isMatch){
-                return res.send({
-                    success:false,
-                    message: 'Error, Invalid Password'
-                });               
-            }
-
-            //User is valid
-            const ONE_WEEK = 3000; //token validity in seconds
-            
-            //generating the token
-            const token = jwt.sign({user}, process.env.SECRET,{expiresIn: ONE_WEEK});
-            
-            //user is valid
-            //this object is only used to remove the password from the returned fields
-            let returnUser = {
-                name: user.name,
-                email: user.email,
-                surname: user.surname,
-                password: user.password,
-                role: user.role,
-                nation: user.nation,
-                city:user.city,
-                prefix:user.prefix,
-                phone: user.phone,
-                creationDate:user.creationDate,
-                status:user.status,
-                hospital:user.hospital,
-                specialization:user.specialization,
-
-            }
-
-            //send the response back
-            return res.send({
-                success:true,
-                user: returnUser,
-                token
-            });
-        });
+    //check if the email exists
+    const user = await User.findOne({
+        email:req.body.email
     });
+    if (!user) 
+    return res.status(400).send('Email is not found');
+    
+    //password is correct
+    const validPass = await bcrypt.compare(
+        req.body.password, user.password
+        );
+    if (!validPass) 
+    return res.status(400).send('Invalid password');
+
+    //User is valid
+    const ONE_WEEK = 3000; //token validity in seconds
+            
+    //create and assign the token
+    const token = jwt.sign({_id: user._id}, process.env.SECRET,{expiresIn: ONE_WEEK});
+    res.header('auth-token', token);
+    
+    let returnUser = {
+        name: user.name, 
+    }
+    return res.send({
+        success: true,
+        user: returnUser,
+        token
+    })
+
+
 });
 
 //Registration doctor
-router.post('/register', (req, res, next) => {
-    let newUser = new User({
+router.post('/register', async (req, res, next) => {
+    const newUser = new User({
         name: req.body.name,
         surname:req.body.surname,
         nation:req.body.nation,
@@ -148,6 +113,7 @@ router.get('list', (req,res, next) => {
 router.post('getuser', (req, res, next) => {
     let _id = req.body.id;
     let query = {_id}
+    console.log(query);
     User.findById(query, (err,user) => {
         if (err) {
             return res.send({

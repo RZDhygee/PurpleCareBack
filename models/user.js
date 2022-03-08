@@ -7,17 +7,17 @@ const { stringify } = require('querystring');
 //Schema definition
 //Adding validate rule for email to be unique
 
-const UserSchema = mongoose.Schema({
-    name: String,
-    surname: String,
-    email: {type: String, required: true},
-    password: {type: String, required: true},
+const UserSchema = new mongoose.Schema({
+    name: {type:String, min:6},
+    surname: {type:String, min:6},
+    email: {type: String, required: true, unique: true},
+    password: {type: String, required: true,min:6},
     role: String,
     nation:String,
     city: String,
     prefix:String,
     phone: String,
-    creationDate:String,
+    creationDate:{type:Date, default:Date.now},
     status:String,
     hospital:String,
     specialization:String,

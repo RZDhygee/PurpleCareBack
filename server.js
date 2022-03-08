@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -12,6 +11,7 @@ const session = require('express-session');
 
 //import the routes
 app.use(express.json()); //parses incoming requests with Json playloads
+
 
 
 //https://purplecaredocs.herokuapp.com/
@@ -71,10 +71,12 @@ app.get('/',(req,res,next) => {
 });
 
 const UserRoutes = require('./routes/users');
-
+const TokenRoutes = require('./routes/tokens');
 
 //Users Routes
 app.use('/users', UserRoutes);
+app.use('/tokens',TokenRoutes);
+
 
 //start the server
 app.listen(_PORT, () => {
