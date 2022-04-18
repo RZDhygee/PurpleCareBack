@@ -72,13 +72,16 @@ app.get('/',(req,res,next) => {
 
 const UserRoutes = require('./routes/users');
 const TokenRoutes = require('./routes/tokens');
+const CountryRoutes = require('./routes/countries');
 
 //Users Routes
 app.use('/users', UserRoutes);
 app.use('/tokens',TokenRoutes);
+app.use('/countries',CountryRoutes);
 
 
 //start the server
 app.listen(_PORT, () => {
     console.log('Server started');
 });
+

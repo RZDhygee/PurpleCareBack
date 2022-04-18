@@ -1,0 +1,8 @@
+[
+  { "code": "BE", "name": "Belgium" },
+  { "code": "CH", "name": "Switzerland" },
+  { "code": "DE", "name": "Germany" },
+  { "code": "FR", "name": "France" },
+  { "code": "GB", "name": "United Kingdom" },
+  { "code": "IT", "name": "Italy" }
+]

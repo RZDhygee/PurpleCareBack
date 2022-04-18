@@ -93,7 +93,7 @@ router.post('/register', async (req, res, next) => {
 
 
 //list of users
-router.get('list', (req,res, next) => {
+router.get('/list', (req,res, next) => {
     User.find((err,users) => {
         if (err) {
             return res.send({
@@ -110,7 +110,7 @@ router.get('list', (req,res, next) => {
 
 
 //get user by id
-router.post('getuser', (req, res, next) => {
+router.post('/getuser', (req, res, next) => {
     let _id = req.body.id;
     let query = {_id}
     console.log(query);
