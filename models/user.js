@@ -13,8 +13,13 @@ const UserSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true,min:6},
     role: String,
-    nation:String,
-    city: String,
+    //nation:String,
+    country: 
+        {
+            type: mongoose.Schema.Types.String,
+            ref : "Country"
+        }
+    ,
     prefix:String,
     phone: String,
     creationDate:{type:Date, default:Date.now},

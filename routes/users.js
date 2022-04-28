@@ -6,6 +6,7 @@ const passport = require('passport');
 const {use} = require('passport');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+const { db } = require('../models/user');
 
 //Login
 router.post('/auth', async (req, res) => {
@@ -48,13 +49,16 @@ router.post('/register', async (req, res, next) => {
     const newUser = new User({
         name: req.body.name,
         surname:req.body.surname,
-        nation:req.body.nation,
-        city:req.body.city,
+       // nation:req.body.nation,
+        country:req.body.country,
         hospital:req.body.hospital,
         specialization:req.body.specialization,
         email:req.body.email,
         password:req.body.password
     });
+
+   
+
 
     const email = req.body.email;
     const query = {email}
@@ -79,7 +83,7 @@ router.post('/register', async (req, res, next) => {
         if (err){
             return res.send({
                 success: false,
-                message: 'Failed to save the user'+err
+                message: 'Failed to save the user '+err
             });
         }
         res.send({

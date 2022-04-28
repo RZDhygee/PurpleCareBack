@@ -11,7 +11,7 @@ const jsonFile = require('../data.json');
 //list of countries
 //read json file
 let rawData = fs.readFileSync('data.json');
-let File = JSON.parse(rawData);
+let countries = JSON.parse(rawData);
 router.get('/list', (req,res, next) => {
   Country.find((err) => {
       if (err) {
@@ -22,12 +22,46 @@ router.get('/list', (req,res, next) => {
       }
       return res.send({
           success: true,
-          File
+          countries
       });
   });
 });
 
-
-
+//add country
+router.post('/add', (req, res, next) => {
+    console.log(req.body)
+      let newCountry = new Country({
+        name: req.body.name,
+        nicename: req.body.nicename,
+        iso:req.body.iso,
+        iso3: req.body.iso3,
+        phonecode:req.body.phonecode,
+        numcode:req.body.numcode,
+        is_europe:req.body.is_europe,
+        vat:req.body.vat
+      });
+      
+    
+      newCountry.save((err, country) => {
+        if (err) {
+        //  console.log(err);
+          return res.send({
+            success: false,
+            message: 'Failed to save the country'
+          });
+        }
+        if (!country) {
+          return res.send({
+            success: false,
+            message: 'Error, Invalid country'
+          });
+        }
+        res.send({
+          success: true,
+          message: 'country Saved',
+          country
+        });
+      });
+    });
 
 module.exports = router;
